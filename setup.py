@@ -5,6 +5,7 @@ import distutils.dir_util  as dut
 import distutils.file_util as fut
 import subprocess
 import sys
+from setuptools import setup, find_packages, extension
 
 pycairo_version        = '1.8.6'
 cairo_version_required = '1.8.6'
@@ -57,7 +58,7 @@ Libs:
           )
 fo.close()
 
-cairo = dic.Extension(
+cairo = extension.Extension(
     name = 'cairo._cairo',
      sources = ['cairo/cairomodule.c',
                'cairo/pycairo-context.c',
@@ -72,12 +73,12 @@ cairo = dic.Extension(
     libraries    = pkg_config_parse('--libs-only-l', 'cairo'),
     runtime_library_dirs = runtime_library_dirs,
     )
-
-dic.setup(
+setup(
     name = "pycairo",
     version = pycairo_version,
     description = "python interface for cairo",
     packages = ['cairo'],
+    install_requires=['setuptools'],
     ext_modules = [cairo],
     data_files=[('include/pycairo',['cairo/pycairo.h']),
                 ('lib/pkgconfig',[pkgconfig_file])],
